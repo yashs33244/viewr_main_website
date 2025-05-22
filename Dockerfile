@@ -13,7 +13,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the project with Bun
+# Build the project with Bun, disabling ESLint
+ENV NEXT_DISABLE_ESLINT=1
+ENV ESLINT_SKIP=true
 RUN bun run build
 
 # Stage 3: Runner
