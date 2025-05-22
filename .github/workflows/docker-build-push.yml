@@ -9,19 +9,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Test Docker build
+        run: |
+          docker build -t viewr-dark:test .
+          echo "✅ Docker build test successful"
+
       - name: Log in to Docker Hub
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
+        if: github.event_name != 'pull_request'
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/viewr-dark:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/viewr-dark:latest

@@ -40,7 +40,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Docker
 
-The application has been dockerized for easy deployment.
+The application has been dockerized for easy deployment. The Docker setup uses Bun for faster and more reliable builds.
 
 #### Building the Docker image
 
@@ -52,6 +52,18 @@ docker build -t viewr-dark .
 
 ```bash
 docker run -p 3000:3000 viewr-dark
+```
+
+#### Testing the Docker build
+
+You can test if the Docker build works correctly without running the application:
+
+```bash
+# Using docker-compose to test the build
+docker-compose --profile test run build-test
+
+# Or directly with Docker
+docker build -t viewr-dark:test .
 ```
 
 #### Using Docker Compose

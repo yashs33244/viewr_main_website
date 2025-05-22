@@ -28,6 +28,16 @@ services:
       retries: 3
       start_period: 10s
 
+  # Build test service - used to verify the Dockerfile builds correctly
+  build-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: viewr-dark:test
+    profiles:
+      - test
+    command: echo "Build test successful!"
+
   # Uncomment this section if you need a database
   # db:
   #   image: postgres:14-alpine
