@@ -1,0 +1,32 @@
+# Versioning and metadata
+.git
+.github
+.gitignore
+
+# Build dependencies
+node_modules
+.npm
+
+# Environment (contains sensitive data)
+.env*
+!.env.example
+
+# Files not required for production
+README.md
+.next/cache
+*.log
+
+# Test directories
+__tests__
+test
+tests
+coverage
+
+# Docker files themselves
+Dockerfile
+.dockerignore
+
+# Other unnecessary files
+.DS_Store
+.idea
+.vscode 
