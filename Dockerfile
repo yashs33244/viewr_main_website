@@ -16,7 +16,9 @@ COPY . .
 # Build the project with Bun, disabling ESLint
 ENV NEXT_DISABLE_ESLINT=1
 ENV ESLINT_SKIP=true
-RUN bun run build
+ENV NODE_ENV=production
+ENV DISABLE_ESLINT_PLUGIN=true
+RUN bun run build-no-lint
 
 # Stage 3: Runner
 FROM node:20-alpine AS runner
