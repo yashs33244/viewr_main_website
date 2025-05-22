@@ -23,7 +23,6 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          cd viewr-dark
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/viewr-dark:latest .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/viewr-dark:latest
 
