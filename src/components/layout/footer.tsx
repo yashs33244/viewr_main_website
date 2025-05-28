@@ -31,7 +31,8 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Leading provider of advanced security solutions for businesses and homes.
+              Leading provider of advanced security solutions for businesses and
+              homes.
             </p>
             <div className="flex space-x-4 text-muted-foreground">
               <Link
@@ -70,7 +71,9 @@ export function Footer() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h3 className="font-semibold mb-6 text-lg text-white">Quick Links</h3>
+            <h3 className="font-semibold mb-6 text-lg text-white">
+              Quick Links
+            </h3>
             <ul className="space-y-4">
               <FooterLink href="#products">Products</FooterLink>
               <FooterLink href="#solutions">Solutions</FooterLink>
@@ -84,7 +87,9 @@ export function Footer() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="font-semibold mb-6 text-lg text-white">Contact Us</h3>
+            <h3 className="font-semibold mb-6 text-lg text-white">
+              Contact Us
+            </h3>
             <ul className="space-y-5">
               <li>
                 <Link
@@ -94,7 +99,13 @@ export function Footer() {
                   <div className="w-8 h-8 rounded-full bg-viewr-deep-purple/30 flex items-center justify-center group-hover:bg-viewr-deep-purple/50 transition-colors">
                     <MailIcon className="w-4 h-4 text-viewr-purple-light" />
                   </div>
-                  <span className="text-sm">help@viewr.in</span>
+
+                  <a
+                    href="mailto:help@viewr.in"
+                    className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline hover:no-underline transition-colors duration-200"
+                  >
+                    help@viewr.in
+                  </a>
                 </Link>
               </li>
               <li>
@@ -112,9 +123,15 @@ export function Footer() {
                 <div className="w-8 h-8 rounded-full bg-viewr-deep-purple/30 flex items-center justify-center shrink-0 mt-1">
                   <MapPinIcon className="w-4 h-4 text-viewr-purple-light" />
                 </div>
-                <span className="text-sm">
-                  Tower 4, DLF CORPORATE GREENS, 2114-17, Sector 74A, Gurugram, Haryana 122004
-                </span>
+                <a
+                  href="https://maps.app.goo.gl/bdrULHZTvYASArDQ6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 cursor-pointer transition-colors duration-200 hover:underline"
+                >
+                  Tower 4, DLF CORPORATE GREENS, 2114-17, Sector 74A, Gurugram,
+                  Haryana 122004
+                </a>
               </li>
             </ul>
           </motion.div>
@@ -124,9 +141,12 @@ export function Footer() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h3 className="font-semibold mb-6 text-lg text-white">Stay Updated</h3>
+            <h3 className="font-semibold mb-6 text-lg text-white">
+              Stay Updated
+            </h3>
             <p className="text-sm text-muted-foreground mb-6">
-              Subscribe to our newsletter for the latest security updates and news.
+              Subscribe to our newsletter for the latest security updates and
+              news.
             </p>
             <div className="flex flex-col space-y-3">
               <div className="relative">
@@ -137,10 +157,7 @@ export function Footer() {
                 />
                 <div className="absolute inset-0 rounded-lg beam-border pointer-events-none"></div>
               </div>
-              <BeamButton
-                variant="purple"
-                className="w-full"
-              >
+              <BeamButton variant="purple" className="w-full">
                 Subscribe
               </BeamButton>
             </div>
@@ -150,20 +167,32 @@ export function Footer() {
         <div className="border-t border-viewr-deep-purple/20 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} Viewr. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="hover:text-viewr-purple-light transition-colors">
+            <Link
+              href="/privacy"
+              className="hover:text-viewr-purple-light transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-viewr-purple-light transition-colors">
+            <Link
+              href="/terms"
+              className="hover:text-viewr-purple-light transition-colors"
+            >
               Terms of Service
             </Link>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
-function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+function FooterLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
   return (
     <li>
       <Link
@@ -173,68 +202,131 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
         {children}
       </Link>
     </li>
-  )
+  );
 }
 
 // Icons
-function FacebookIcon({className}: {className?: string}) {
+function FacebookIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
     </svg>
-  )
+  );
 }
 
-function TwitterIcon({className}: {className?: string}) {
+function TwitterIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
       <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
     </svg>
-  )
+  );
 }
 
-function LinkedInIcon({className}: {className?: string}) {
+function LinkedInIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
       <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
       <rect width="4" height="12" x="2" y="9"></rect>
       <circle cx="4" cy="4" r="2"></circle>
     </svg>
-  )
+  );
 }
 
-function InstagramIcon({className}: {className?: string}) {
+function InstagramIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
       <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
       <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
     </svg>
-  )
+  );
 }
 
-function MailIcon({className}: {className?: string}) {
+function MailIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
       <rect width="20" height="16" x="2" y="4" rx="2"></rect>
       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
     </svg>
-  )
+  );
 }
 
-function PhoneIcon({className}: {className?: string}) {
+function PhoneIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
     </svg>
-  )
+  );
 }
 
-function MapPinIcon({className}: {className?: string}) {
+function MapPinIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
       <circle cx="12" cy="10" r="3"></circle>
     </svg>
-  )
+  );
 }
