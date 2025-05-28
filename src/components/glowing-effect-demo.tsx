@@ -54,26 +54,27 @@ interface GridItemProps {
 const GridItem = ({ area, icon, title, description }: GridItemProps) => {
   return (
     <li className={`min-h-[14rem] list-none ${area}`}>
-      <div className="relative h-full rounded-2xl border border-viewr-deep-purple/40 p-2 md:rounded-3xl md:p-3 bg-black/40 backdrop-blur-sm transition-all duration-300 hover:border-viewr-purple/30">
+      <div className="relative h-full rounded-2xl border border-viewr-deep-purple/30 p-2 md:rounded-3xl md:p-3 group hover:border-viewr-purple/50 transition-all duration-300">
         <GlowingEffect
           spread={40}
-          glow={true}
+          glow={false}
           disabled={false}
-          proximity={64}
+          proximity={80}
           inactiveZone={0.01}
+          className="group-hover:opacity-100"
         />
-        <div className="border-0.75 relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl p-6 md:p-6 shadow-[0px_0px_27px_0px_rgba(89,72,180,0.1)]">
+        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl p-6 md:p-6 bg-black/20 backdrop-blur-sm border border-viewr-deep-purple/20 group-hover:bg-black/30 transition-all duration-300">
           <div className="relative flex flex-1 flex-col justify-between gap-3">
-            <div className="w-fit rounded-lg border border-viewr-purple/30 p-2 bg-black/60">
+            <div className="w-fit rounded-lg border border-viewr-deep-purple/40 p-2 group-hover:border-viewr-purple/60 transition-colors duration-300">
               {icon}
             </div>
             <div className="space-y-3">
-              <h3 className="-tracking-4 pt-0.5 font-sans text-xl/[1.375rem] font-semibold text-balance text-white md:text-2xl/[1.875rem]">
+              <h3 className="pt-0.5 font-sans text-xl/[1.375rem] font-semibold text-balance md:text-2xl/[1.875rem] text-white group-hover:text-viewr-purple-light transition-colors duration-300">
                 {title}
               </h3>
-              <h2 className="font-sans text-sm/[1.125rem] text-muted-foreground md:text-base/[1.375rem] [&_b]:md:font-semibold [&_strong]:md:font-semibold">
+              <p className="font-sans text-sm/[1.125rem] md:text-base/[1.375rem] text-muted-foreground">
                 {description}
-              </h2>
+              </p>
             </div>
           </div>
         </div>

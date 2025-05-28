@@ -1,21 +1,29 @@
 "use client";
 
-import React, { forwardRef, useRef } from "react";
-
-import { cn } from "@/lib/utils";
-import { AnimatedBeam } from "@/registry/magicui/animated-beam";
+import React, {
+  forwardRef,
+  useRef,
+  useId,
+  useState,
+  useEffect,
+  RefObject,
+} from "react";
+import { motion } from "motion/react";
 
 const Circle = forwardRef<
   HTMLDivElement,
-  { className?: string; children?: React.ReactNode }
->(({ className, children }, ref) => {
+  { className?: string; children?: React.ReactNode; size?: "sm" | "md" | "lg" }
+>(({ className = "", children, size = "md" }, ref) => {
+  const sizeClasses = {
+    sm: "size-10",
+    md: "size-12",
+    lg: "size-16",
+  };
+
   return (
     <div
       ref={ref}
-      className={cn(
-        "z-10 flex size-12 items-center justify-center rounded-full border-2 bg-white dark:bg-gray-800 p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]",
-        className
-      )}
+      className={`z-10 flex ${sizeClasses[size]} items-center justify-center rounded-full border-2 bg-white dark:bg-gray-800 p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)] ${className}`}
     >
       {children}
     </div>
@@ -24,212 +32,405 @@ const Circle = forwardRef<
 
 Circle.displayName = "Circle";
 
-export function SecurityCameraDemo({ className }: { className?: string }) {
+const cn = (...classes: (string | undefined)[]) => {
+  return classes.filter(Boolean).join(" ");
+};
+
+export interface AnimatedBeamProps {
+  className?: string;
+  containerRef: RefObject<HTMLElement | null>;
+  fromRef: RefObject<HTMLElement | null>;
+  toRef: RefObject<HTMLElement | null>;
+  curvature?: number;
+  reverse?: boolean;
+  pathColor?: string;
+  pathWidth?: number;
+  pathOpacity?: number;
+  gradientStartColor?: string;
+  gradientStopColor?: string;
+  delay?: number;
+  duration?: number;
+  startXOffset?: number;
+  startYOffset?: number;
+  endXOffset?: number;
+  endYOffset?: number;
+}
+
+export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
+  className,
+  containerRef,
+  fromRef,
+  toRef,
+  curvature = 0,
+  reverse = false,
+  duration = 3,
+  delay = 0,
+  pathColor = "gray",
+  pathWidth = 2,
+  pathOpacity = 0.2,
+  gradientStartColor = "#ffaa40",
+  gradientStopColor = "#9c40ff",
+  startXOffset = 0,
+  startYOffset = 0,
+  endXOffset = 0,
+  endYOffset = 0,
+}) => {
+  const id = useId();
+  const [pathD, setPathD] = useState("");
+  const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 });
+
+  const gradientCoordinates = reverse
+    ? {
+        x1: ["90%", "-10%"],
+        x2: ["100%", "0%"],
+        y1: ["0%", "0%"],
+        y2: ["0%", "0%"],
+      }
+    : {
+        x1: ["10%", "110%"],
+        x2: ["0%", "100%"],
+        y1: ["0%", "0%"],
+        y2: ["0%", "0%"],
+      };
+
+  useEffect(() => {
+    const updatePath = () => {
+      if (containerRef.current && fromRef.current && toRef.current) {
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const rectA = fromRef.current.getBoundingClientRect();
+        const rectB = toRef.current.getBoundingClientRect();
+        const svgWidth = containerRect.width;
+        const svgHeight = containerRect.height;
+        setSvgDimensions({ width: svgWidth, height: svgHeight });
+        const startX =
+          rectA.left - containerRect.left + rectA.width / 2 + startXOffset;
+        const startY =
+          rectA.top - containerRect.top + rectA.height / 2 + startYOffset;
+        const endX =
+          rectB.left - containerRect.left + rectB.width / 2 + endXOffset;
+        const endY =
+          rectB.top - containerRect.top + rectB.height / 2 + endYOffset;
+        const controlY = startY - curvature;
+        const d = `M ${startX},${startY} Q ${
+          (startX + endX) / 2
+        },${controlY} ${endX},${endY}`;
+        setPathD(d);
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      updatePath();
+    });
+
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    updatePath();
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [
+    containerRef,
+    fromRef,
+    toRef,
+    curvature,
+    startXOffset,
+    startYOffset,
+    endXOffset,
+    endYOffset,
+  ]);
+
+  return (
+    <svg
+      fill="none"
+      width={svgDimensions.width}
+      height={svgDimensions.height}
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn(
+        "pointer-events-none absolute left-0 top-0 transform-gpu stroke-2",
+        className
+      )}
+      viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
+    >
+      <path
+        d={pathD}
+        stroke={pathColor}
+        strokeWidth={pathWidth}
+        strokeOpacity={pathOpacity}
+        strokeLinecap="round"
+      />
+      <path
+        d={pathD}
+        strokeWidth={pathWidth}
+        stroke={`url(#${id})`}
+        strokeOpacity="1"
+        strokeLinecap="round"
+      />
+      <defs>
+        <motion.linearGradient
+          className="transform-gpu"
+          id={id}
+          gradientUnits={"userSpaceOnUse"}
+          initial={{
+            x1: "0%",
+            x2: "0%",
+            y1: "0%",
+            y2: "0%",
+          }}
+          animate={{
+            x1: gradientCoordinates.x1,
+            x2: gradientCoordinates.x2,
+            y1: gradientCoordinates.y1,
+            y2: gradientCoordinates.y2,
+          }}
+          transition={{
+            delay,
+            duration,
+            ease: [0.16, 1, 0.3, 1],
+            repeat: Infinity,
+            repeatDelay: 0,
+          }}
+        >
+          <stop stopColor={gradientStartColor} stopOpacity="0"></stop>
+          <stop stopColor={gradientStartColor}></stop>
+          <stop offset="32.5%" stopColor={gradientStopColor}></stop>
+          <stop
+            offset="100%"
+            stopColor={gradientStopColor}
+            stopOpacity="0"
+          ></stop>
+        </motion.linearGradient>
+      </defs>
+    </svg>
+  );
+};
+
+export default function SimplifiedSecurityFlow({
+  className = "",
+}: {
+  className?: string;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const cameraRef = useRef<HTMLDivElement>(null);
-  const cloudRef = useRef<HTMLDivElement>(null);
-  const model1Ref = useRef<HTMLDivElement>(null);
-  const model2Ref = useRef<HTMLDivElement>(null);
-  const model3Ref = useRef<HTMLDivElement>(null);
-  const userRef = useRef<HTMLDivElement>(null);
+
+  // Simplified structure - 4 main layers
+  const inputRef = useRef<HTMLDivElement>(null);
+  const processingRef = useRef<HTMLDivElement>(null);
+  const aiModelRef = useRef<HTMLDivElement>(null);
+  const outputRef = useRef<HTMLDivElement>(null);
+
+  // Synchronized animation - all beams start together
+  const syncDelay = 0;
+  const syncDuration = 4;
 
   return (
     <div
-      className={cn(
-        "relative flex h-[500px] w-full items-center justify-center overflow-hidden p-10 rounded-lg",
-        className
-      )}
+      className={`relative flex h-[400px] w-full items-center justify-center overflow-hidden rounded-lg bg-black ${className}`}
       ref={containerRef}
     >
-      <div className="flex size-full max-w-4xl flex-row items-stretch justify-between gap-10">
-        <div className="flex flex-col justify-center">
-          <Circle ref={cameraRef} className="bg-blue-50 dark:bg-blue-900">
-            <CameraIcon />
-          </Circle>
-        </div>
-        <div className="flex flex-col justify-center">
+      <div className="flex size-full max-w-5xl flex-row items-center justify-between gap-16 p-8">
+        {/* Input Layer */}
+        <div className="flex flex-col items-center gap-4">
           <Circle
-            ref={cloudRef}
-            className="size-16 bg-purple-50 dark:bg-purple-900"
+            ref={inputRef}
+            className="bg-blue-50 dark:bg-blue-900"
+            size="lg"
           >
-            <CloudIcon />
+            <InputIcon />
           </Circle>
+          <div className="text-center">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Data Sources
+            </h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Cameras, Sensors, Mobile
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col justify-center gap-4">
-          <Circle ref={model1Ref} className="bg-green-50 dark:bg-green-900">
-            <AIModelIcon1 />
+
+        {/* Processing Layer */}
+        <div className="flex flex-col items-center gap-4">
+          <Circle
+            ref={processingRef}
+            className="bg-purple-50 dark:bg-purple-900"
+            size="lg"
+          >
+            <ProcessingIcon />
           </Circle>
-          <Circle ref={model2Ref} className="bg-yellow-50 dark:bg-yellow-900">
-            <AIModelIcon2 />
-          </Circle>
-          <Circle ref={model3Ref} className="bg-red-50 dark:bg-red-900">
-            <AIModelIcon3 />
-          </Circle>
+          <div className="text-center">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Processing
+            </h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Cloud & Edge Computing
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col justify-center">
-          <Circle ref={userRef} className="bg-gray-50 dark:bg-gray-900">
-            <UserIcon />
+
+        {/* AI Models Layer */}
+        <div className="flex flex-col items-center gap-4">
+          <Circle
+            ref={aiModelRef}
+            className="bg-green-50 dark:bg-green-900"
+            size="lg"
+          >
+            <AIIcon />
           </Circle>
+          <div className="text-center">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              AI Analysis
+            </h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Vision, NLP, Behavior
+            </p>
+          </div>
+        </div>
+
+        {/* Output Layer */}
+        <div className="flex flex-col items-center gap-4">
+          <Circle
+            ref={outputRef}
+            className="bg-red-50 dark:bg-red-900"
+            size="lg"
+          >
+            <OutputIcon />
+          </Circle>
+          <div className="text-center">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Security Response
+            </h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Alerts & Actions
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* AnimatedBeams */}
+      {/* Synchronized Animated Beams */}
       <AnimatedBeam
         containerRef={containerRef}
-        fromRef={cameraRef}
-        toRef={cloudRef}
-        duration={3}
+        fromRef={inputRef}
+        toRef={processingRef}
         gradientStartColor="#3b82f6"
         gradientStopColor="#8b5cf6"
+        delay={syncDelay}
+        duration={syncDuration}
+        curvature={0}
       />
+
       <AnimatedBeam
         containerRef={containerRef}
-        fromRef={cloudRef}
-        toRef={model1Ref}
-        duration={3}
+        fromRef={processingRef}
+        toRef={aiModelRef}
         gradientStartColor="#8b5cf6"
         gradientStopColor="#10b981"
+        delay={syncDelay}
+        duration={syncDuration}
+        curvature={0}
       />
+
       <AnimatedBeam
         containerRef={containerRef}
-        fromRef={cloudRef}
-        toRef={model2Ref}
-        duration={3}
-        gradientStartColor="#8b5cf6"
-        gradientStopColor="#eab308"
+        fromRef={aiModelRef}
+        toRef={outputRef}
+        gradientStartColor="#10b981"
+        gradientStopColor="#ef4444"
+        delay={syncDelay}
+        duration={syncDuration}
+        curvature={0}
       />
+
+      {/* Additional flow lines for visual richness */}
       <AnimatedBeam
         containerRef={containerRef}
-        fromRef={cloudRef}
-        toRef={model3Ref}
-        duration={3}
+        fromRef={inputRef}
+        toRef={aiModelRef}
+        gradientStartColor="#3b82f6"
+        gradientStopColor="#10b981"
+        delay={syncDelay + 0.5}
+        duration={syncDuration}
+        curvature={30}
+        pathOpacity={0.1}
+      />
+
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={processingRef}
+        toRef={outputRef}
         gradientStartColor="#8b5cf6"
         gradientStopColor="#ef4444"
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={model1Ref}
-        toRef={userRef}
-        duration={3}
-        gradientStartColor="#10b981"
-        gradientStopColor="#6b7280"
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={model2Ref}
-        toRef={userRef}
-        duration={3}
-        gradientStartColor="#eab308"
-        gradientStopColor="#6b7280"
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={model3Ref}
-        toRef={userRef}
-        duration={3}
-        gradientStartColor="#ef4444"
-        gradientStopColor="#6b7280"
+        delay={syncDelay + 1}
+        duration={syncDuration}
+        curvature={-30}
+        pathOpacity={0.1}
       />
     </div>
   );
 }
 
-// Simple Icons
-const CameraIcon = () => (
+// Simplified Icon Components
+const InputIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-6"
+    className="size-8"
   >
     <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
     <circle cx="12" cy="13" r="3" />
   </svg>
 );
 
-const CloudIcon = () => (
+const ProcessingIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
     className="size-8"
   >
-    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+    <rect width="16" height="20" x="4" y="2" rx="2" ry="2" />
+    <path d="M9 22v-4h6v4" />
+    <path d="M8 6h.01" />
+    <path d="M16 6h.01" />
+    <path d="M12 6h.01" />
+    <path d="M12 10h.01" />
+    <path d="M12 14h.01" />
+    <path d="M16 10h.01" />
+    <path d="M16 14h.01" />
+    <path d="M8 10h.01" />
+    <path d="M8 14h.01" />
   </svg>
 );
 
-const AIModelIcon1 = () => (
+const AIIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-6"
+    className="size-8"
   >
-    <rect width="18" height="18" x="3" y="3" rx="2" />
-    <path d="M7 7h.01" />
-    <path d="M10 7h7" />
-    <path d="M7 12h.01" />
-    <path d="M10 12h7" />
-    <path d="M7 17h.01" />
-    <path d="M10 17h7" />
+    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h4a2 2 0 0 1 2 2v1.28c.6.35 1 .99 1 1.72 0 .73-.4 1.37-1 1.72V15a2 2 0 0 1-2 2h-4v1.27c.6.35 1 .99 1 1.73a2 2 0 1 1-4 0c0-.74.4-1.38 1-1.73V17H7a2 2 0 0 1-2-2v-1.28c-.6-.35-1-.99-1-1.72 0-.73.4-1.37 1-1.72V9a2 2 0 0 1 2-2h4V5.73c-.6-.35-1-.99-1-1.73a2 2 0 0 1 2-2Z" />
+    <circle cx="12" cy="12" r="3" />
   </svg>
 );
 
-const AIModelIcon2 = () => (
+const OutputIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-6"
+    className="size-8"
   >
-    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-  </svg>
-);
-
-const AIModelIcon3 = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-6"
-  >
-    <circle cx="12" cy="12" r="10" />
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
     <path d="m9 12 2 2 4-4" />
-  </svg>
-);
-
-const UserIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-6"
-  >
-    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
   </svg>
 );

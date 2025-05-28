@@ -99,13 +99,7 @@ export function Footer() {
                   <div className="w-8 h-8 rounded-full bg-viewr-deep-purple/30 flex items-center justify-center group-hover:bg-viewr-deep-purple/50 transition-colors">
                     <MailIcon className="w-4 h-4 text-viewr-purple-light" />
                   </div>
-
-                  <a
-                    href="mailto:help@viewr.in"
-                    className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline hover:no-underline transition-colors duration-200"
-                  >
-                    help@viewr.in
-                  </a>
+                  <span className="text-sm">help@viewr.in</span>
                 </Link>
               </li>
               <li>
@@ -119,19 +113,21 @@ export function Footer() {
                   <span className="text-sm">+91 98913 67183</span>
                 </Link>
               </li>
-              <li className="text-muted-foreground flex items-start gap-2 group">
-                <div className="w-8 h-8 rounded-full bg-viewr-deep-purple/30 flex items-center justify-center shrink-0 mt-1">
-                  <MapPinIcon className="w-4 h-4 text-viewr-purple-light" />
-                </div>
-                <a
+              <li>
+                <Link
                   href="https://maps.app.goo.gl/bdrULHZTvYASArDQ6"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 cursor-pointer transition-colors duration-200 hover:underline"
+                  className="text-muted-foreground hover:text-viewr-purple-light transition-colors flex items-start gap-2 group"
                 >
-                  Tower 4, DLF CORPORATE GREENS, 2114-17, Sector 74A, Gurugram,
-                  Haryana 122004
-                </a>
+                  <div className="w-8 h-8 rounded-full bg-viewr-deep-purple/30 flex items-center justify-center shrink-0 mt-1">
+                    <MapPinIcon className="w-4 h-4 text-viewr-purple-light" />
+                  </div>
+                  <span className="text-sm">
+                    Tower 4, DLF CORPORATE GREENS, 2114-17, Sector 74A,
+                    Gurugram, Haryana 122004
+                  </span>
+                </Link>
               </li>
             </ul>
           </motion.div>

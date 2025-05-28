@@ -3,12 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { HeroSection } from "@/components/sections/hero-section";
+
 import { SolutionsSection } from "@/components/sections/solutions-section";
 import { AboutSection } from "@/components/sections/about-section";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { SecurityHero } from "@/components/security-hero";
 import MouseGradient from "@/components/ui/mouse-gradient";
+import { BGPattern } from "@/components/ui/bg-pattern";
 
 export default function Home() {
   // Reference for scroll animations
@@ -29,6 +30,7 @@ export default function Home() {
 
   return (
     <div ref={scrollRef} className="min-h-screen flex flex-col">
+      <BGPattern variant="grid" mask="fade-edges" />
       <MouseGradient />
 
       <Header />

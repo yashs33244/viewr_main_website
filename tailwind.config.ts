@@ -60,10 +60,9 @@ const config = {
             DEFAULT: "#5948b4",
             dark: "#402e71"
           },
-          deep: {
-            purple: "#221344",
-            black: "#0c041d"
-          },
+          "purple-light": "#8a70ff",
+          "deep-purple": "#221344",
+          "deep-black": "#0c041d"
         },
       },
       borderRadius: {

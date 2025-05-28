@@ -13,10 +13,11 @@ import {
 } from "@/components/ui/card";
 import { BeamButton } from "@/components/ui/beam-button";
 import GlowingEffectDemo from "@/components/glowing-effect-demo";
+import SecurityCameraDemo from "@/registry/magicui/security-camera-demo";
 
 export function SolutionsSection() {
   return (
-    <section id="solutions" className=" relative bg-noise mt-20 py-20 ">
+    <section id="solutions" className="relative bg-noise py-20">
       {/* Background Animation Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-20 pulse-gradient">
@@ -24,14 +25,33 @@ export function SolutionsSection() {
         </div>
       </div>
 
-      <div className="container relative z-10 ">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+      <div className="container relative z-10">
+        {/* Smart Camera Integration Section */}
+        <div className="text-center mb-20">
+          <div className="mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Smart Camera Integration
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              See how our AI seamlessly integrates with your existing camera
+              infrastructure
+            </p>
+          </div>
+
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <SecurityCameraDemo className="w-full rounded-lg overflow-hidden shadow-2xl" />
+            </div>
+          </div>
+        </div>
+
+        {/* Tailored Security Solutions Section */}
+        <div className="text-center max-w-3xl mx-auto mb-16 mt-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="mb-5 flex justify-center"></div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
               Tailored Security Solutions
             </h2>
@@ -42,17 +62,18 @@ export function SolutionsSection() {
           </motion.div>
         </div>
 
+        {/* Bento Grid */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-24"
+          className="mb-32"
         >
           <GlowingEffectDemo />
         </motion.div>
 
-        {/* Bento Grid Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-40">
+        {/* Advanced Security Technologies Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-20">
           {/* Left: Features List */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -60,7 +81,6 @@ export function SolutionsSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col justify-center"
           >
-            <div className="mb-4"></div>
             <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">
               Advanced Security Technologies
             </h3>
@@ -94,9 +114,9 @@ export function SolutionsSection() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="relative"
+            className="relative group"
           >
-            <div className="relative h-full min-h-[400px] rounded-xl overflow-hidden beam-border">
+            <div className="relative h-full min-h-[400px] rounded-xl overflow-hidden beam-border group-hover:shadow-2xl group-hover:shadow-viewr-purple/20 transition-all duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-black to-viewr-deep-purple/30"></div>
 
               <div className="relative h-full z-10 p-6 flex flex-col">
@@ -128,26 +148,16 @@ export function SolutionsSection() {
                     </div>
 
                     {/* Motion Detection Frames */}
-                    <div className="absolute top-1/4 left-1/3 w-16 h-20 border-2 border-yellow-500/50 rounded-sm animate-pulse"></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                      <div className="w-16 h-16 border-2 border-green-400 rounded animate-pulse"></div>
+                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-green-400 bg-black/60 px-2 py-1 rounded">
+                        Person Detected
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                <div className="mt-6">
-                  <h3 className="text-xl font-bold mb-3 text-white">
-                    Real-Time Monitoring
-                  </h3>
-                  <p className="text-gray-400 text-sm">
-                    Our advanced monitoring systems provide 24/7 surveillance
-                    with instant alerts for suspicious activities. All footage
-                    is securely encrypted and stored for easy access.
-                  </p>
                 </div>
               </div>
             </div>
-
-            {/* Decorative Elements */}
-            <div className="absolute -top-5 -right-5 w-24 h-24 bg-viewr-purple/20 rounded-full blur-xl"></div>
-            <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-viewr-blue/20 rounded-full blur-lg"></div>
           </motion.div>
         </div>
       </div>

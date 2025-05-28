@@ -1,16 +1,24 @@
 "use client";
 
 import React from "react";
-import { SecurityCameraDemo } from "@/registry/magicui/security-camera-demo";
+
 import { RainbowButton } from "@/components/magicui/rainbow-button";
 import SecurityDashboard from "./mockup";
 import { CalendlyButton } from "./ui/calendly-button";
 import { motion } from "motion/react";
+import { BGPattern } from "./ui/bg-pattern";
 export const calendlyUrl = "https://calendly.com/yash-viewr/30min";
 
 export function SecurityHero() {
   return (
-    <section className="w-full py-16 md:py-24 lg:py-32 xl:py-32 bg-gradient-bg">
+    <section className="w-full py-16 md:py-24 lg:py-32 xl:py-32 ">
+      <BGPattern
+        variant="grid"
+        mask="none"
+        fill="#8a70ff"
+        size={40}
+        className="opacity-20"
+      />
       <div className="container px-4 md:px-6 max-w-7xl mx-auto">
         {/* Header Content */}
         <div className="text-center space-y-8 mb-16 md:mb-20 lg:mb-24">
@@ -61,16 +69,6 @@ export function SecurityHero() {
 
         {/* Dashboard Demo */}
         <div className="mb-16 md:mb-20 lg:mb-24">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
-              Real-Time Security Dashboard
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Monitor all your cameras, track identified persons, and receive
-              instant alerts from our comprehensive control center.
-            </p>
-          </div>
-
           <div className="flex justify-center">
             <div className="w-full max-w-6xl">
               <SecurityDashboard />
@@ -79,23 +77,6 @@ export function SecurityHero() {
         </div>
 
         {/* Camera Demo */}
-        <div className="text-center mb-0">
-          <div className="mb-8 md:mb-12 ">
-            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
-              Smart Camera Integration
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              See how our AI seamlessly integrates with your existing camera
-              infrastructure to provide intelligent monitoring and analysis.
-            </p>
-          </div>
-
-          <div className="flex justify-center">
-            <div className="w-full max-w-4xl">
-              <SecurityCameraDemo className="w-full rounded-lg overflow-hidden shadow-2xl" />
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

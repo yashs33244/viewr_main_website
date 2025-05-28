@@ -5,7 +5,7 @@ import { BeamButton } from "@/components/ui/beam-button";
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-28 relative bg-noise">
+    <section id="about" className="py-32 relative bg-noise">
       {/* Background Animation Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] opacity-10 pulse-gradient">
@@ -20,7 +20,6 @@ export function AboutSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="mb-5 flex justify-center"></div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
               About Us
             </h2>
@@ -33,7 +32,7 @@ export function AboutSection() {
 
         {/* Stats Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -53,6 +52,7 @@ export function AboutSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
+          className="mb-24"
         >
           <div className="glass-card rounded-xl p-8 max-w-4xl mx-auto relative overflow-hidden">
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-viewr-purple/5 rounded-full blur-[100px]"></div>
@@ -90,23 +90,6 @@ export function AboutSection() {
         </motion.div>
 
         {/* Team Section Preview */}
-        <div className="mt-24 flex justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="text-center"
-          >
-            <h3 className="text-xl md:text-2xl font-bold mb-6 text-white">
-              Join a Team of Security Experts
-            </h3>
-            <p className="text-muted-foreground max-w-2xl mb-8">
-              Our team brings together expertise in AI, cybersecurity, and
-              physical security systems to create the most comprehensive
-              security solutions available.
-            </p>
-          </motion.div>
-        </div>
       </div>
     </section>
   );

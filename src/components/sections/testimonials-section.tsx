@@ -29,7 +29,7 @@ export function TestimonialsSection() {
   }, []);
 
   return (
-    <section id="testimonials" className="py-28 relative bg-noise">
+    <section id="testimonials" className=" relative bg-noise pb-24">
       {/* Background Animation Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[200px] opacity-10">
@@ -44,7 +44,6 @@ export function TestimonialsSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="mb-5 flex justify-center"></div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
               What Our Clients Say
             </h2>
