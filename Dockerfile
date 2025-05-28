@@ -3,8 +3,8 @@ FROM oven/bun:1 AS deps
 WORKDIR /app
 
 # Install dependencies using Bun
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+COPY package.json bun.lock* ./
+RUN bun install
 
 # Stage 2: Builder
 FROM oven/bun:1 AS builder
