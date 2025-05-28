@@ -44,11 +44,7 @@ export function TestimonialsSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="mb-5 flex justify-center">
-              <BeamButton variant="default" size="sm">
-                Client Stories
-              </BeamButton>
-            </div>
+            <div className="mb-5 flex justify-center"></div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
               What Our Clients Say
             </h2>
