@@ -1,7 +1,10 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { BeamButton } from "@/components/ui/beam-button";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useRef } from "react";
 
 export function AboutSection() {
   return (
@@ -31,13 +34,15 @@ export function AboutSection() {
         </div>
 
         {/* Stats Grid */}
+
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24 "
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <StatCard value="983+" label="Installations" icon={<ShieldIcon />} />
+
           <StatCard value="9+" label="Patents" icon={<PatentIcon />} />
           <StatCard
             value="96%+"
@@ -124,20 +129,114 @@ function StatCard({
   label: string;
   icon: React.ReactNode;
 }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  // Special handling for 24/7 value
+  const isSpecialValue = value === "24/7";
+
+  // Extract numeric value from string (e.g., "983+" -> 983, "96%+" -> 96)
+  const numericValue = isSpecialValue
+    ? 24
+    : parseInt(value.replace(/[^\d]/g, ""));
+  const suffix = isSpecialValue ? "/7" : value.replace(/[\d]/g, "");
+
+  useEffect(() => {
+    if (isInView && !isSpecialValue) {
+      let startTime: number;
+      const duration = 2000; // 2 seconds animation
+
+      const animate = (currentTime: number) => {
+        if (!startTime) startTime = currentTime;
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentCount = Math.floor(easeOutQuart * numericValue);
+
+        setCount(currentCount);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    } else if (isSpecialValue) {
+      setCount(24);
+    }
+  }, [isInView, numericValue, isSpecialValue]);
+
   return (
-    <div className="glass-card p-6 rounded-xl hover-lift text-center group">
-      <div className="w-12 h-12 mx-auto mb-4 text-viewr-purple-light">
-        {icon}
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="relative group border border-gray-800/50 rounded-2xl"
+    >
+      <div className="relative bg-black backdrop-blur-sm rounded-2xl p-8 text-center transition-all duration-300">
+        {/* Card Border Glow */}
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 blur-xl opacity-50"></div>
+
+        {/* Grid pattern background */}
+        <div className="absolute inset-0 rounded-2xl overflow-hidden">
+          <div className="w-full h-full border border-gray-800/50 rounded-2xl">
+            {/* Horizontal lines - moved closer to borders */}
+            <div className="absolute left-0 right-0 top-[15%] h-px bg-gray-800/50"></div>
+            <div className="absolute left-0 right-0 bottom-[15%] h-px bg-gray-800/50"></div>
+            {/* Vertical lines - moved closer to borders */}
+            <div className="absolute top-0 bottom-0 left-[15%] w-px bg-gray-800/50"></div>
+            <div className="absolute top-0 bottom-0 right-[15%] w-px bg-gray-800/50"></div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10">
+          {/* Animated number */}
+          <div className="mb-3">
+            <span className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-400 tracking-tight">
+              {isSpecialValue ? "24" : count.toLocaleString()}
+              <span className="text-blue-400">{suffix}</span>
+            </span>
+          </div>
+
+          {/* Label */}
+          <div className="text-gray-400 font-medium text-lg tracking-wide uppercase">
+            {label}
+          </div>
+        </div>
       </div>
-      <div className="text-3xl font-bold mb-1 bg-gradient-to-b from-white to-gray-300 bg-clip-text text-transparent shine group-hover:animate-gradient-x">
-        {value}
+    </motion.div>
+  );
+}
+
+// Demo component with sample stats
+export default function AnimatedStatCardDemo() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 p-8">
+      <div className="container mx-auto">
+        <h1 className="text-4xl font-bold text-white text-center mb-12">
+          Professional Animated Stats
+        </h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <StatCard value="983+" label="Installations" icon={<ShieldIcon />} />
+          <StatCard value="777k" label="Views" icon={<ViewsIcon />} />
+          <StatCard
+            value="96%+"
+            label="Guaranteed Accuracy"
+            icon={<TargetIcon />}
+          />
+          <StatCard value="24/7" label="Support" icon={<ClockIcon />} />
+        </div>
       </div>
-      <div className="text-muted-foreground">{label}</div>
     </div>
   );
 }
 
-// Icons
+// Icon components
 function ShieldIcon() {
   return (
     <svg
@@ -155,7 +254,7 @@ function ShieldIcon() {
   );
 }
 
-function PatentIcon() {
+function ViewsIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -167,8 +266,8 @@ function PatentIcon() {
       strokeLinejoin="round"
       className="w-full h-full"
     >
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+      <circle cx="12" cy="12" r="3"></circle>
     </svg>
   );
 }
@@ -206,6 +305,24 @@ function ClockIcon() {
     >
       <circle cx="12" cy="12" r="10"></circle>
       <polyline points="12 6 12 12 16 14"></polyline>
+    </svg>
+  );
+}
+
+function PatentIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-full h-full"
+    >
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
     </svg>
   );
 }

@@ -5,11 +5,12 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 
 import { SolutionsSection } from "@/components/sections/solutions-section";
-import { AboutSection } from "@/components/sections/about-section";
+
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { SecurityHero } from "@/components/security-hero";
 import MouseGradient from "@/components/ui/mouse-gradient";
 import { BGPattern } from "@/components/ui/bg-pattern";
+import { AboutSection } from "@/components/sections/about-section";
 
 export default function Home() {
   // Reference for scroll animations
